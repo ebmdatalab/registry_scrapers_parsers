@@ -2,7 +2,9 @@
 Code to scrape/handle/extract data from various ICTRP Primary Registries.
 
 Notes:
+
 -Many of these make use of Selenium and ChromeDriver at a discrete path, not as an environmental PATH variable. Make sure to modify to fit your file system and ChromeDriver (or other Driver) implementation
+
 -The default is to get all trials from XML into JSON format for easier handling, especially with arrays. The exact fields needed are likely to vary by use-case. Individual elements can be called either within python or exported as a CSV with 1 column of JSON strings, 1 row per trial, which can be used with other applications.
 
 There are 17 ICTRP Primary Registries and Data Provicers
