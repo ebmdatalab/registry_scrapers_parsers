@@ -7,6 +7,8 @@ Notes:
 
 -The default is to get all trials from XML into JSON format for easier handling, especially with arrays. The exact fields needed are likely to vary by use-case. Individual elements can be called either within python or exported as a CSV with 1 column of JSON strings, 1 row per trial, which can be used with other applications.
 
+-These are written in jupyter notebooks for the time being for development and testing but they can, and probably should, be run as just simple scripts in actual use cases.
+
 There are 17 ICTRP Primary Registries and Data Provicers
 
 We already have code to scrape and handle data from:
@@ -44,7 +46,8 @@ https://github.com/opentrials/collectors/tree/master/collectors/isrctn
 TCTR - Built and Partially Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/TCTR%20(Thailand)
 
-NTR - Built and Partially Tested
+NTR - Built and Partially Tested:
+https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/NTR%20(Netherlands)
 
 CTRI - To Build
 
