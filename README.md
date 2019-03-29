@@ -44,6 +44,8 @@ https://github.com/opentrials/collectors/tree/master/collectors/isrctn
 TCTR - Built and Partially Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/TCTR%20(Thailand)
 
+NTR - Built and Partially Tested
+
 CTRI - To Build
 
 RPCEC - To Build
@@ -58,6 +60,6 @@ PACTR - To Build
 
 SLCTR - To Build
 
-NTR - To Build
+
 
 
