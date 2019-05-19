@@ -50,7 +50,7 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/TCTR%20(Thai
 NTR - Built and Partially Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/NTR%20(Netherlands)
 
-CTRI - To Build
+CTRI - Built and Partially Tested
 
 RPCEC - To Build
 
