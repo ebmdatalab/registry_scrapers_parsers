@@ -28,10 +28,10 @@ ANZCTR - Built and Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/ANZCTR%20(AusNZ)
 Note: This gets XML from the website and converts it which makes it more flexible as you can export discrete searches as needed. ANZCTR also has a an east crawling interface here: http://www.anzctr.org.au/crawl.aspx
 
-CRIS - Built and Partially Tested:
+CRIS - Built and Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/CRiS%20(S.%20Korea)
 
-Rebec - Built and Partially Tested:
+Rebec - Built Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/ReBec%20(Brazil)
 
 REPEC - Built and Partially Tested:
@@ -50,7 +50,8 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/TCTR%20(Thai
 NTR - Built and Partially Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/NTR%20(Netherlands)
 
-CTRI - Built and Partially Tested
+CTRI - Built and Partially Tested:
+https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/CTRI%20(India)
 
 RPCEC - To Build
 
