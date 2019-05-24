@@ -5,7 +5,7 @@ Notes:
 
 -Many of these make use of Selenium and ChromeDriver at a discrete path, not as an environmental PATH variable. Make sure to modify to fit your file system and ChromeDriver (or other browser Driver) implementation
 
--The default is to get all trials from XML into JSON format for easier handling either via further python processing or SQL. The exact fields needed are likely to vary by use-case. Individual elements can be called either within python or exported as a CSV with 1 column of JSON strings, 1 row per trial, which can be used with other applications.
+-The default is to get all trials from XML into a dictionary format for easier handling either via further python processing or SQL. The exact fields needed are likely to vary by use-case. Individual elements can be called either within python or exported as a CSV with 1 column of JSON strings, 1 row per trial, which can be used with other applications.
 
 -These are written in jupyter notebooks for the time being for development and testing but they can, and probably should, be run as just simple scripts in actual use cases. Each script will come with a function at the end that can be called to export a CSV.
 
