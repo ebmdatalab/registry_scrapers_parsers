@@ -162,12 +162,12 @@ for result_url in results_urls:
     trial_tables = page_html.find_all('table')[4]
     td_value = trial_tables.find_all('td', class_ = 'valueColumn')
     td_label = trial_tables.find_all('td', class_ = 'labelColumn') 
+    trial_id = trial_tables.find_all('a')[0].get_text()
+    results_trial_id.append(trial_id)
+    global_end_date = tds_strip(td_value,3)
+    global_end_of_trial_date.append(global_end_date)
     
-    if td_label[-1].div.get_text().strip() == 'Summary report(s)' and leg_text is not None:
-        trial_id = trial_tables.find_all('a')[0].get_text()
-        results_trial_id.append(trial_id)
-        global_end_date = tds_strip(td_value,3)
-        global_end_of_trial_date.append(global_end_date)
+    if td_label[-1].div.get_text().strip() == 'Summary report(s)' and leg_text:
         first_pub = tds_strip(td_value,11)
         first_publication_date.append(first_pub)
         current_pub = tds_strip(td_value,10)
@@ -176,11 +176,7 @@ for result_url in results_urls:
         results_version.append(version)
         results_type.append("Document")
     
-    elif td_label[-1].div.get_text().strip() == 'Summary report(s)' and leg_text is None:
-        trial_id = trial_tables.find_all('a')[0].get_text()
-        results_trial_id.append(trial_id)
-        global_end_date = tds_strip(td_value,3)
-        global_end_of_trial_date.append(global_end_date)
+    elif td_label[-1].div.get_text().strip() == 'Summary report(s)' and not leg_text:
         first_pub = tds_strip(td_value,7)
         first_publication_date.append(first_pub)
         current_pub = tds_strip(td_value,6)
@@ -190,10 +186,6 @@ for result_url in results_urls:
         results_type.append("Mixed")
         
     else:
-        trial_id = trial_tables.find_all('a')[0].get_text()
-        results_trial_id.append(trial_id)
-        global_end_date = tds_strip(td_value,3)
-        global_end_of_trial_date.append(global_end_date)
         first_pub = tds_strip(td_value,7)
         first_publication_date.append(first_pub)
         current_pub = tds_strip(td_value,6)
@@ -241,6 +233,6 @@ print("Cleaned {} Rows".format(cleaned))
 results_df.dtypes
 
 #make a csv
-results_df.to_csv('euctr_results_scrape_may2019.csv')
+results_df.to_csv('euctr_results_scrape_june2019.csv')
 
 
