@@ -7,11 +7,13 @@ Notes:
 
 -The default is to get all trials from XML into a dictionary format for easier handling either via further python processing or SQL. The exact fields needed are likely to vary by use-case. Individual elements can be called either within python or exported as a CSV with 1 column of JSON strings, 1 row per trial, which can be used with other applications.
 
--These are written in jupyter notebooks for the time being for development and testing but they can, and probably should, be run as just simple scripts in actual use cases. Each script will come with a function at the end that can be called to export a CSV.
+-Jupyter notebooks are used for prototyping and testing. The notebooks are shared alongside the paired Jupytext file as a script. 
+
+-Each script will come with a function at the end that can be called to export a CSV.
 
 There are 17 ICTRP Primary Registries and Data Provicers
 
-We already have code to scrape and handle data from:
+We already have code to scrape and/or handle data from:
 
 ClinicalTrials.gov:
 https://github.com/ebmdatalab/clinicaltrials-act-tracker
