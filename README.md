@@ -28,7 +28,7 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/EUCTR/Result
 
 ANZCTR - Built and Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/ANZCTR%20(AusNZ)
-Note: This gets XML from the website and converts it which makes it more flexible as you can export discrete searches as needed. ANZCTR also has a an east crawling interface here: http://www.anzctr.org.au/crawl.aspx
+Note: This gets XML from the website and parses it. This is a more flexible approach as you can export discrete searches, via URL, as needed. ANZCTR also has an easy crawling interface here if you are interested in that approach: http://www.anzctr.org.au/crawl.aspx
 
 CRIS - Built and Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/CRiS%20(S.%20Korea)
