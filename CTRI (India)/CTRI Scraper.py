@@ -21,17 +21,22 @@
 #Visting the CTRI
 #Doing the broadest possible search (i.e. searching for the letter 'a')
 #Waiting for the results to load and manually retireving the URL of the last record on the rable
-# -
 
+# +
 from requests import get
 from requests import ConnectionError
 from bs4 import BeautifulSoup
 import re
 from random import randint
-from IPython.core.display import clear_output
 from datetime import datetime
 from datetime import date
 import csv
+
+try:
+    get_ipython
+    from tqdm import tqdm_notebook as tqdm
+except NameError:
+    from tqdm import tqdm
 
 
 # +
@@ -292,7 +297,7 @@ test_pages = [str(i) for i in range(1,11)]
 with open('ctri_trials.csv', 'w', newline='', encoding='utf-8') as ctri_csv:
     writer = csv.DictWriter(ctri_csv, fieldnames=headers)
     writer.writeheader()
-    for page in test_pages:
+    for page in tqdm(test_pages):
         request +=1
         soup = get_html(page)
         trial_info = get_tables(soup)
@@ -304,7 +309,5 @@ with open('ctri_trials.csv', 'w', newline='', encoding='utf-8') as ctri_csv:
             t_dict = make_dict()
             written += 1
             writer.writerow(t_dict)
-        print('Current Trial: {} Trials Written {} Trials Invalid'.format(page, written, skipped))
-        clear_output(wait = True)
 
 

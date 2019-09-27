@@ -67,8 +67,8 @@ print(trial_count)
 # +
 #everything we need to run our selenium crawler
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
+#from selenium.webdriver.common.keys import Keys
+#from selenium.webdriver.common.by import By
 from time import sleep
 
 page_list = [str(i) for i in range(2,int(max_page)+1)]
@@ -97,7 +97,7 @@ for page in page_list:
 sleep(5)
 driver.quit()
 
- 
+
 
 # +
 #quick check to make sure we got the correct number of files

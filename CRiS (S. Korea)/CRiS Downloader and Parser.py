@@ -24,8 +24,6 @@ import os
 import xmltodict
 import json
 import re
-from requests import get
-from bs4 import BeautifulSoup
 from pathlib import Path
 import platform
 
