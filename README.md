@@ -24,7 +24,10 @@ https://github.com/ebmdatalab/euctr-tracker-code
 Status of Additional Registries:
 
 EUCTR Results Pages - Built and Tested:
-https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/EUCTR/Results%20Section%20Scrape
+
+
+EUCTR Sponsor Country - Built and Test (Note: Have to run as script, not in notebook)
+
 
 ANZCTR - Built and Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/ANZCTR%20(AusNZ)
@@ -55,17 +58,21 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/NTR%20(Nethe
 CTRI - Built and Partially Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/CTRI%20(India)
 
-RPCEC - To Build
+DRKS - Built and Partially Tested
+https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/DRKS%20(Germany)
 
-DRKS - To Build
+PACTR - Built and Partially Tested
+https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/PACTR%20(Africa)
+
+RPCEC - To Build
 
 IRCT - To Build
 
 JPRN - To Build
 
-PACTR - To Build
-
 SLCTR - To Build
+
+LBCTR - To Build
 
 
 
