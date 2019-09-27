@@ -24,10 +24,10 @@ https://github.com/ebmdatalab/euctr-tracker-code
 Status of Additional Registries:
 
 EUCTR Results Pages - Built and Tested:
-
+https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/EUCTR%20(EU)/Results%20Section%20Scrape
 
 EUCTR Sponsor Country - Built and Test (Note: Have to run as script, not in notebook)
-
+https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/EUCTR%20(EU)/Sponsor%20Country%20Scrape
 
 ANZCTR - Built and Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/ANZCTR%20(AusNZ)
