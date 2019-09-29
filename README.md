@@ -11,7 +11,7 @@ Notes:
 
 -Each script will come with a function at the end that can be called to export a CSV.
 
-There are 17 ICTRP Primary Registries and Data Provicers
+There are 18 ICTRP Primary Registries and Data Provicers
 
 We already have code to scrape and/or handle data from:
 
