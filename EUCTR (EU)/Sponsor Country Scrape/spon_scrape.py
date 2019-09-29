@@ -7,7 +7,7 @@ from time import sleep
 import pandas as pd
 from multiprocessing import Manager, Pool
 from itertools import repeat
-#import istarmap
+import istarmap
 from tqdm import tqdm
 
 import urllib3
