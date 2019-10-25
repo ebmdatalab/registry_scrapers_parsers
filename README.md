@@ -64,14 +64,15 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/DRKS%20(Germ
 PACTR - Built and Partially Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/PACTR%20(Africa)
 
-JPRN - Built and Partiall Tested
+JPRN - Built and Partially Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/JPRN%20(Japan)
+
+SLCTR - Built and Partially Tested
+https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/SLCTR%20(Sri%20Lanka)
 
 RPCEC - To Build
 
 IRCT - To Build
-
-SLCTR - To Build
 
 LBCTR - To Build
 
