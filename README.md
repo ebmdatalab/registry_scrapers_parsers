@@ -45,7 +45,7 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/REPEC%20(Per
 ChiCTR - Under Development but might be impossible to scrape cheaply and easily
 
 ISRCTN - Not Necessary at present:
-Can generate a CSV of most registry values for entire registry natively through website search.
+Can generate a CSV of most registry values for entire registry natively through website search with long date values.
 Previous ISRCTN Scraper available here
 https://github.com/opentrials/collectors/tree/master/collectors/isrctn
 
@@ -64,11 +64,12 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/DRKS%20(Germ
 PACTR - Built and Partially Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/PACTR%20(Africa)
 
+JPRN - Built and Partiall Tested
+https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/JPRN%20(Japan)
+
 RPCEC - To Build
 
 IRCT - To Build
-
-JPRN - To Build
 
 SLCTR - To Build
 
