@@ -78,8 +78,6 @@ while dl_check == 0 and time() - start_time < 600:
         sleep(5)
 # -
 
-type(total_trials)
-
 print(os.listdir(download_path))
 file_name = ''
 for file in os.listdir(download_path):
@@ -88,12 +86,13 @@ for file in os.listdir(download_path):
 print(file_name)
 
 # +
-#there's, as far as I can tell, a single instance of a problematic html element (&#1;) making the XML invalid. 
+#there is, as far as I can tell, a single instance of a problematic html element (&#1;) making the XML invalid. 
 #Upon Investigation, it appears to be completely inconsequential so rather than messing around with encoding, 
 #much easier to just delete that 1 instance
 
-xmlstring = open(download_path + '/' + file_name, 'r', encoding="utf8").read()
-xml_fixed = re.sub(r'&#1;', '', xmlstring)
+
+with open(download_path + '/' + file_name, 'r', encoding="utf8") as xmlstring:
+    xml_fixed = re.sub(r'&#1;', '', xmlstring.read())
 
 # +
 cris_trials = []
@@ -130,8 +129,10 @@ def cris_csv():
             writer.writerow([val])
 
 #If you want a CSV run this function after the script runs
-# -
 
+
+# -
+cris_csv()
 
 
 

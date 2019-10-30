@@ -98,8 +98,8 @@ print(file_name)
 #Upon Investigation, it appears to be completely inconsequential so rather than messing around with encoding, 
 #much easier to just delete that 1 instance
 
-xmlstring = open(download_path + '/' + file_name, 'r', encoding="utf8").read()
-xml_fixed = re.sub(r'&#1;', '', xmlstring)
+with open(download_path + '/' + file_name, 'r', encoding="utf8") as xmlstring:
+    xml_fixed = re.sub(r'&#1;', '', xmlstring.read())
 
 # +
 cris_results_trials = []
@@ -127,8 +127,9 @@ def cris_results_csv():
 
 #If you want a CSV run this function after the script runs
 
-# +
-#cris_results_csv()
+
 # -
+
+cris_results_csv()
 
 
