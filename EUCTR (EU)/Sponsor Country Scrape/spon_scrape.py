@@ -1,3 +1,8 @@
+import os
+os.getcwd()
+os.chdir('/Users/nicholasdevito/Desktop/euctr_spon_scrape')
+os.getcwd()
+
 from requests import get
 from requests import ConnectionError
 from bs4 import BeautifulSoup
@@ -5,9 +10,9 @@ import re
 from time import time
 from time import sleep
 import pandas as pd
+import istarmap
 from multiprocessing import Manager, Pool
 from itertools import repeat
-import istarmap
 from tqdm import tqdm
 
 import urllib3
@@ -101,7 +106,10 @@ def get_fix(error_trials):
     fixes = []
     for e_t in error_trials:
         fix_input = input('Fix for trial error {}: '.format(e_t))
-        list_response = list([fix_input])
+        if ',' in fix_input:
+            list_response = fix_input.split(",")
+        else:
+            list_response = list([fix_input])
         fixes.append(list_response)
     return fixes
 
@@ -156,7 +164,7 @@ def get_sponsor_info(trial_ids, countries):
 
 if __name__ == '__main__':
     pool = Pool(8)
-    pool.map(get_trials, chunk4)
+    pool.map(get_trials, pages)
 
 trial_info = list(trial_info)
 
@@ -171,9 +179,20 @@ for t in trial_info:
 
 sleep(2)
 
+#As of now there should only be 1 error trial due to some broken html
+#This is trial 2008-004625-42
+#When the input comes up enter 'DE' (no quotes) and press enter
+#And the fucntions will handle the rest
+#If other trials pop up, try running the above again and see if they persist
+#If they do, investigate whether they are actually broken
+#I believe my fixes should be able to handle any type of error and multiple
+#country trials but this isn't fully tested yet.
+#For multiple countries enter it as comma separated contries in the order
+#they appear in the EUCTR entry i.e. 'HU, GB, DE' (again no quotes)
+
 if ['Error'] in countries:
     errors, error_trials = find_errors(countries, trial_ids)
-else:
+else:   
     errors = []
     print('No Errors')
 
@@ -187,6 +206,8 @@ if __name__ == '__main__':
     for _ in tqdm(pool.istarmap(get_sponsor_info, zip(list(trial_ids), list(countries))),
                        total = len(trial_ids)):
         pass
+    #for _ in pool.starmap(get_sponsor_info, zip(list(trial_ids), list(countries))):
+    #    pass
     pool.close()
     pool.join()
 
@@ -200,6 +221,8 @@ spons = df.drop('sponsors', 1).join(s_exp.reset_index(level=1, drop=True)).reset
 end_time = time()
 
 print('Program ran in {} minute(s)'.format(round((end_time - start_time)/60),0))
+
+spons.to_csv('jan_spon_info.csv')
 
 #def test_single_trial(trial, country):
 #    trial_page = 'https://www.clinicaltrialsregister.eu/ctr-search/trial/'
