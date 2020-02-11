@@ -25,7 +25,7 @@ import csv
 
 try:
     get_ipython
-    from tqdm import tqdm_notebook as tqdm
+    from tqdm.notebook import tqdm
 except NameError:
     from tqdm import tqdm
     
@@ -186,6 +186,26 @@ def get_row(soup):
 
 # -
 
+def table_check(soup):
+    if soup.find('table', {'class':'table table-striped'}):
+        return 1
+    else:
+        return 0
+
+
+# +
+trial_data = []
+
+for i in tqdm(id_list):
+    soup = get_url(base_trial_urls + i)
+    trial_info = get_row(soup)
+    pubs = get_url(base_trial_urls + i + '/publications')
+    trial_info['pubs_in_tab'] = table_check(pubs)
+    prog = get_url(base_trial_urls + i + '/progresses')
+    trial_info['prog_in_tab'] = table_check(prog)
+    trial_data.append(trial_info)
+# -
+
 headers = ['trial_id', 'trial_title', 'registration_date', 'last_updated_date', 'scientific_title', 'public_title', 
            'brief_title', 'study_disease_condition', 'scientific_acronym', 'public_acronym', 'universal_trial_number', 
            'other_trial_ids', 'research_question', 'study_type', 'allocation', 'masking', 'control', 'assignment', 'purpose', 
@@ -195,23 +215,17 @@ headers = ['trial_id', 'trial_title', 'registration_date', 'last_updated_date', 
            'ethics_information', 'scientific_contact', 'public_contact', 'primary_sponsor', 'secondary_sponsor',
            'ipd_sharing', 'ipd_sharing_plan', 'protocol_available', 'protocol_version_date', 'protocol_url',
            'summary_results_available', 'results_posting_date', 'final_completion_date', 'final_enrollment', 
-           'date_of_first_publication', 'link_to_results', 'results_summary']
+           'date_of_first_publication', 'link_to_results', 'results_summary', 'pubs_in_tab', 'prog_in_tab']
 
-start_time = time()
-with open('slctr_trials.csv', 'w', newline='', encoding='utf-8') as slctr_csv:
+# +
+from datetime import date
+
+with open('slctr_trials_{}.csv'.format(date.today()), 'w', newline='', encoding='utf-8') as slctr_csv:
     writer = csv.DictWriter(slctr_csv, fieldnames=headers)
     writer.writeheader()
-    request = 0
-    for i in tqdm(id_list):
-        soup = get_url(base_trial_urls + i)
-        trial_info = get_row(soup)
-        writer.writerow(trial_info)
-end_time = time()
-print('Scrape Finished in {} minutes'.format(round((end_time-start_time) / 60),0))
-
-
-
-
+    for td in trial_data:
+        writer.writerow(td)
+# -
 
 
 

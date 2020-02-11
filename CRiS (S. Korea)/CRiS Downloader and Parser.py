@@ -63,7 +63,7 @@ sleep(5)
 
 dl_check = 0
 start_time = time()
-while dl_check == 0 and time() - start_time < 600:
+while dl_check == 0 and time() - start_time < 10000:
     count = 0
     for file in os.listdir(download_path):
         if file.endswith(".xml"):
@@ -77,6 +77,8 @@ while dl_check == 0 and time() - start_time < 600:
         dl_check = 0
         sleep(5)
 # -
+
+driver.quit()
 
 print(os.listdir(download_path))
 file_name = ''

@@ -22,7 +22,7 @@ import csv
 
 try:
     get_ipython
-    from tqdm import tqdm_notebook as tqdm
+    from tqdm.notebook import tqdm
 except NameError:
     from tqdm import tqdm
 
@@ -66,7 +66,7 @@ prefs = {"download.default_directory" : download_path,
         'safebrowsing.enabled': 'false'}
 chromeOptions.add_experimental_option("prefs",prefs)
 driver = webdriver.Chrome(executable_path=chrome_driver, options=chromeOptions)
-driver.get('https://www.drks.de/drks_web/setPage.do?page=first')
+driver.get('https://www.drks.de/drks_web/setPage.do?page=1')
 select = Select(driver.find_element_by_name('criteria.sortField'))
 select.select_by_value('trial_drks_id')
 driver.find_element_by_xpath("//a[@href ='setPage.do?page=last']").click()
@@ -86,6 +86,9 @@ trial_ids = []
 for num in id_num_list:
     trial_id = 'DRKS' + '0' * (8 - len(str(num))) + str(num)
     trial_ids.append(trial_id)
+# -
+
+print(last_n)
 
 
 # +
@@ -301,7 +304,8 @@ def trial_info(soup):
 # +
 base_url = 'https://www.drks.de/drks_web/navigate.do?navigationId=trial.HTML&TRIAL_ID='
 
-error_text = 'Due to an error of the data management, this study was inadvertently registered incompletely.'
+error_text = ['Due to an error of the data management, this study was inadvertently registered incompletely.',
+              'This study has been imported from ClinicalTrials.gov inadvertently, although it had been registered with DRKS before.']
 
 headers = ['drks_id', 'registration_status', 'recruitment_status', 'study_closing_date', 'trial_acronym', 'trial_url',
  'registration_date', 'partner_registration_date', 'investigator_sponsored_or_initiated_trial', 'ethics_info', 'secondary_ids',
@@ -315,9 +319,9 @@ start_time = time()
 with open('drks_trials.csv', 'w', newline='', encoding='utf-8') as drks_csv:
     writer = csv.DictWriter(drks_csv, fieldnames=headers)
     writer.writeheader()
-    for tid in tqdm(trial_ids):
+    for tid in tqdm(trial_ids[]):
         soup = get_url(base_url + tid)
-        if soup.find('ul', {'class':'errors'}) or soup.find('div', class_='trial').text == error_text:
+        if soup.find('ul', {'class':'errors'}) or soup.find('div', class_='trial').text in error_text:
             pass
         else:
             try:
@@ -327,7 +331,5 @@ with open('drks_trials.csv', 'w', newline='', encoding='utf-8') as drks_csv:
                 raise type(e)(str(e) + '\n' + 'Error trial: {}'.format(tid)).with_traceback(sys.exc_info()[2])
 end_time = time()
 print('Scrape Finished in {} minues'.format(round((end_time-start_time) / 60),0))
-
-
 
 
