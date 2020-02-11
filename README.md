@@ -9,7 +9,7 @@ Code to scrape/handle/extract data from various ICTRP Primary Registries.
 
 * Jupyter notebooks are used for prototyping, development, and testing however the notebooks are shared alongside the paired Jupytext file as a script.
 
-* Not all scrapers will work cross-platform at the moment. 
+* Not all scrapers will work cross-platform at the moment. See notes.
 
 ## Progress by registry
 
@@ -86,7 +86,7 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/SLCTR%20(Sri
 IRCT - Built and Tested (SEE NOTE)
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/IRCT%20(Iran)
 **Strategy:** Get all the trial url suffixes then visit the trial XML pages and extract
-*Note: There is a regular version of this scraper and one which uses some multi-processing to speed things up. The multi-processing version is a little unfriendly and only works on mac
+*Note: There is a regular version of this scraper and one which uses some multi-processing to speed things up. The multi-processing version is a little unfriendly and only works on Mac*
 
 RPCEC - To Build
 
