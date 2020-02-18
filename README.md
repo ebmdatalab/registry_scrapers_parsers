@@ -5,9 +5,9 @@ Code to scrape/handle/extract data from various ICTRP Primary Registries.
 
 * Some these make use of Selenium and ChromeDriver (at the moment) at a discrete path, not as an environmental PATH variable. Make sure to modify to fit your file system and ChromeDriver (or other browser Driver) implementation
 
-* The strategoy for each registry varies considerably based on how they make data available and how easy it is to interact with. For some it is simply a matter of downloading and parsing an XML file, for others it is much more involved. Outputs can be ndjson (usually in a .csv format though) or a standard CSV with data columns, or some weird mix. For some we ony exact fields needed for our current use-case.
+* The strategy for each registry varies considerably based on how they make data available and how easy it is to interact with. For some it is simply a matter of downloading and parsing a single XML file, for others it is much more involved. Outputs can be ndjson (usually in a .csv format though) or a standard CSV with data columns, or some weird mix. For some we ony exact fields needed for our current use-case.
 
-* Jupyter notebooks are used for prototyping, development, and testing however the notebooks are shared alongside the paired Jupytext file as a script.
+* Jupyter notebooks are used for prototyping, development, and testing however the notebooks are shared alongside the paired Jupytext file.
 
 * Not all scrapers will work cross-platform at the moment. See notes.
 
@@ -92,7 +92,7 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/IRCT%20(Iran
 RPCEC - Built and Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/RPCEC%20(Cuba)
 **Strategy:** Get all the trial url suffixes then visit the trial pages and extract (along with the spanish language publications field)
-*Note: Exports to ndjson in order to behave properly*
+*Note: Exports to ndjson in order to behave properly with later pandas import*
 
 LBCTR - To Build
 
