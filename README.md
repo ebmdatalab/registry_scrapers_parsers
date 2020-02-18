@@ -73,8 +73,9 @@ DRKS - Built and Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/DRKS%20(Germany)  
 **Strategy:** Breifly uses Selenium to grab some information to inform the rest of the scrape which visits each trial page and gets the html
 
-PACTR - Built and Partially Tested
+PACTR - Built and Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/PACTR%20(Africa)
+**Strategy:** No good way to get the max trial url suffix other than looking manually so we look at PACTR with a search that covers everything (i.e. a search for PACTR) and set a max trial url suffix to try and then iterate through each potential trials skipping those that don't exist or those with no assigned PACTR number. Slightly unfriendly but tricky to find a better way at the moment.
 
 JPRN - Built and Partially Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/JPRN%20(Japan)
@@ -88,7 +89,10 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/IRCT%20(Iran
 **Strategy:** Get all the trial url suffixes then visit the trial XML pages and extract  
 *Note: There is a regular version of this scraper and one which uses some multi-processing to speed things up. The multi-processing version is a little unfriendly and only works on Mac*
 
-RPCEC - To Build
+RPCEC - Built and Tested
+https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/RPCEC%20(Cuba)
+**Strategy:** Get all the trial url suffixes then visit the trial pages and extract (along with the spanish language publications field)
+*Note: Exports to ndjson in order to behave properly*
 
 LBCTR - To Build
 

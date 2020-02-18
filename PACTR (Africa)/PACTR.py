@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.4'
-#       jupytext_version: 1.1.1
+#       jupytext_version: 1.2.4
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -19,7 +19,7 @@ from bs4 import BeautifulSoup
 import re
 try:
     get_ipython
-    from tqdm import tqdm_notebook as tqdm
+    from tqdm.notebook import tqdm
 except NameError:
     from tqdm import tqdm
 
@@ -105,9 +105,11 @@ def get_trial_info(soup):
             id_dict['type'] = all_ids[idx].text.strip()
             id_dict['id_number'] = all_ids[idx+1].text.strip()
             if id_dict['type'] == '' and id_dict['id_number'] == '':
-                secondary_ids = None
-            else:
+                pass
+            elif id_dict:
                 secondary_ids.append(id_dict)
+            else:
+                pass
             idx += 2
         t_d['secondary_ids'] = secondary_ids
 
@@ -176,8 +178,9 @@ def get_trial_info(soup):
 
 
 # +
-#there is no good way to get the max trial ID number, based on a search as of 20 September 2019, it appears that 1 to 10,000
-#is a relatively safe range. There should be ~2000 registered trial (2013 as of 20 Sept 2019)
+#there is no good way to get the max trial ID number, based on a search as of 17 February 2020, 
+#it appears that 1 to 11,000 is a relatively safe range. There should be ~2000 registered trial 
+#(2216 as of 17 Feb 2020)
 
 def get_url(url):
     response = get(url)
@@ -186,7 +189,7 @@ def get_url(url):
     return soup
 
 base_url = 'https://pactr.samrc.ac.za/TrialDisplay.aspx?TrialID='
-max_page = 10000z
+max_page = 10000
 pages = [str(i) for i in range(1,int(max_page)+1)]
 
 
@@ -200,13 +203,22 @@ for page in tqdm(pages):
         if id_check:
             trial_info = get_trial_info(soup)
             trial_list.append(trial_info)
+# -
+
+print(len(trial_list))
 
 # +
 import csv
 from datetime import date
 
 def pactr_csv():
-    with open('pactr- ' + str(date.today()) + '.csv','w', newline = '')as cris_csv:
+    with open('pactr- ' + str(date.today()) + '.csv','w', newline = '') as pactr_csv:
         writer=csv.writer(pactr_csv)
         for val in trial_list:
             writer.writerow([val])
+
+# +
+#pactr_csv()
+# -
+
+
