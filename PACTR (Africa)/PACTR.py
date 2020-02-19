@@ -13,6 +13,133 @@
 #     name: python3
 # ---
 
+import requests
+from bs4 import BeautifulSoup
+try:
+    get_ipython
+    from tqdm.notebook import tqdm
+except NameError:
+    from tqdm import tqdm
+
+
+# +
+def get_pages(pages, doc):
+    new_sufs = []
+    for page in pages:
+        form_data = {
+            "__EVENTTARGET": None,
+            "ctl00$MainContent$ctrlSearch$hdnSearchType": "1",
+            "ctl00$MainContent$ctrlSearch$txtBasicSearch": "PACTR",
+        }
+        if len(str(page)) == 1:
+            page = str(page).zfill(2)
+        et = "ctl00$MainContent$ctrlSearch$rptPager$ctl{}$lbPageNumber"
+        form_data["__EVENTTARGET"] = et.format(page)
+        for i in doc.find("form").find_all("input"):
+            if i["id"].startswith("__"):
+                form_data[i["id"]] = i["value"]
+        rsp = session.post(url, form_data)       
+        soup = BeautifulSoup(rsp.text, "html.parser")
+        for l in soup.find_all('div', {'class':'col-md-6 col-sm-6 text-right resultHeader'}):
+            new_sufs.append(l.find('a').get('href'))
+    return new_sufs, soup
+
+def next_pages(doc):
+    # Extract form data for next set of pages
+    form_data = {
+        "__EVENTTARGET": "ctl00$MainContent$ctrlSearch$lbNextPage",
+        "ctl00$MainContent$ctrlSearch$hdnSearchType": "1",
+        "ctl00$MainContent$ctrlSearch$txtBasicSearch": "PACTR",
+    }
+    for i in doc.find("form").find_all("input"):
+        if i["id"].startswith("__"):
+            form_data[i["id"]] = i["value"]
+
+    # Get next set of pages
+    rsp = session.post(url, form_data)
+    doc = BeautifulSoup(rsp.text, "html.parser")
+    return doc
+
+def first_page(doc):
+    suffs = []
+    # Extract form data
+    form_data = {
+        "__EVENTTARGET": "ctl00$MainContent$ctrlSearch$rptPager$ctl00$lbPageNumber",
+        "ctl00$MainContent$ctrlSearch$hdnSearchType": "1",
+        "ctl00$MainContent$ctrlSearch$txtBasicSearch": "PACTR",
+    }
+    for i in doc.find("form").find_all("input"):
+        if i["id"].startswith("__"):
+            form_data[i["id"]] = i["value"]
+    # Get page
+    rsp = session.post(url, form_data)
+    doc = BeautifulSoup(rsp.text, "html.parser")
+
+    for l in doc.find_all('div', {'class':'col-md-6 col-sm-6 text-right resultHeader'}):
+        suffs.append(l.find('a').get('href'))
+    return suffs
+
+
+# -
+
+#setup
+session = requests.Session()
+url_suf = []
+# Get homepage
+url = "https://pactr.samrc.ac.za/Search.aspx"
+rsp = session.get(url)
+
+# Extract form data
+doc = BeautifulSoup(rsp.text, "html.parser")
+form_data = {
+    "__EVENTTARGET": "ctl00$MainContent$ctrlSearch$lbBasicSearch",
+    "ctl00$MainContent$ctrlSearch$hdnSearchType": "1",
+    "ctl00$MainContent$ctrlSearch$txtBasicSearch": "PACTR",
+}
+for i in doc.find("form").find_all("input"):
+    if i["id"].startswith("__"):
+        form_data[i["id"]] = i["value"]
+
+# Do search (this returns page 1)
+rsp = session.post(url, form_data)
+soup = BeautifulSoup(rsp.text, "html.parser")
+
+for l in soup.find_all('div', {'class':'col-md-6 col-sm-6 text-right resultHeader'}):
+    url_suf.append(l.find('a').get('href'))
+
+# +
+iterations = list(range(1,13))
+pages = list(range(1,20))
+
+counter = 1
+for i in tqdm(iterations):
+    if counter < len(iterations):
+        #this searches a set of pages
+        output = get_pages(pages, soup)
+
+        #take the list output and add it to our overall one
+        url_suf = url_suf + output[0]
+
+        #the new doc to get the next set of pages
+        doc = output[1]
+
+        soup = next_pages(doc)
+
+        url_suf = url_suf + first_page(soup)
+        counter +=1
+    else:
+        #This range will be from 1 to 1 + the number of pages on the last set of pages on PACTR
+        pages = list(range(1,2))
+        output = get_pages(pages, soup)
+        url_suf = url_suf + output[0]
+# -
+
+print('All URLs: {}'.format(len(url_suf)))
+
+final_urls = list(set(url_suf))
+
+print('Unique URLs: {}'.format(len(final_urls)))
+
 # +
 from requests import get
 from bs4 import BeautifulSoup
@@ -178,23 +305,10 @@ def get_trial_info(soup):
 
 
 # +
-#there is no good way to get the max trial ID number, based on a search as of 17 February 2020, 
-#it appears that 1 to 11,000 is a relatively safe range. There should be ~2000 registered trial 
-#(2216 as of 17 Feb 2020)
-
-def get_url(url):
-    response = get(url)
-    html = response.content
-    soup = BeautifulSoup(html, "html.parser")
-    return soup
-
-base_url = 'https://pactr.samrc.ac.za/TrialDisplay.aspx?TrialID='
-max_page = 10000
-pages = [str(i) for i in range(1,int(max_page)+1)]
-
+base_url = 'https://pactr.samrc.ac.za/'
 
 trial_list = []
-for page in tqdm(pages):
+for page in tqdm(final_urls):
     url = base_url + page
     soup = get_url(url)
     trial_check = soup.find(text=re.compile(r'Trial no.:'))
@@ -205,20 +319,11 @@ for page in tqdm(pages):
             trial_list.append(trial_info)
 # -
 
-print(len(trial_list))
+print('Scraped Trials: {}'.format(len(trial_list)))
 
-# +
-import csv
+import ndjson
 from datetime import date
-
-def pactr_csv():
-    with open('pactr- ' + str(date.today()) + '.csv','w', newline = '') as pactr_csv:
-        writer=csv.writer(pactr_csv)
-        for val in trial_list:
-            writer.writerow([val])
-
-# +
-#pactr_csv()
-# -
+with open('pactr_json_{}.ndjson'.format(date.today()),'w') as r:
+    ndjson.dump(trial_list, r)
 
 

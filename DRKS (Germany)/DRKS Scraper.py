@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.4'
-#       jupytext_version: 1.1.1
+#       jupytext_version: 1.2.4
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -316,20 +316,24 @@ headers = ['drks_id', 'registration_status', 'recruitment_status', 'study_closin
 # -
 
 start_time = time()
-with open('drks_trials.csv', 'w', newline='', encoding='utf-8') as drks_csv:
-    writer = csv.DictWriter(drks_csv, fieldnames=headers)
-    writer.writeheader()
-    for tid in tqdm(trial_ids[]):
-        soup = get_url(base_url + tid)
-        if soup.find('ul', {'class':'errors'}) or soup.find('div', class_='trial').text in error_text:
+t_info = []
+for tid in tqdm(trial_ids):
+    soup = get_url(base_url + tid)
+    if soup.find('ul', {'class':'errors'}) or soup.find('div', class_='trial').text in error_text:
             pass
-        else:
-            try:
-                writer.writerow(trial_info(soup))
-            except Exception as e:
-                import sys
-                raise type(e)(str(e) + '\n' + 'Error trial: {}'.format(tid)).with_traceback(sys.exc_info()[2])
+    else:
+        try:
+            t_info.append(trial_info(soup))
+        except Exception as e:
+            import sys
+            raise type(e)(str(e) + '\n' + 'Error trial: {}'.format(tid)).with_traceback(sys.exc_info()[2])
 end_time = time()
 print('Scrape Finished in {} minues'.format(round((end_time-start_time) / 60),0))
+
+import ndjson
+from datetime import date
+with open('drks_json_{}.ndjson'.format(date.today()),'w') as r:
+    ndjson.dump(t_info, r)
+
 
 

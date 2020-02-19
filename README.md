@@ -5,7 +5,7 @@ Code to scrape/handle/extract data from various ICTRP Primary Registries.
 
 * Some these make use of Selenium and ChromeDriver (at the moment) at a discrete path, not as an environmental PATH variable. Make sure to modify to fit your file system and ChromeDriver (or other browser Driver) implementation
 
-* The strategy for each registry varies considerably based on how they make data available and how easy it is to interact with. For some it is simply a matter of downloading and parsing a single XML file, for others it is much more involved. Outputs can be ndjson (usually in a .csv format though) or a standard CSV with data columns, or some weird mix. For some we ony exact fields needed for our current use-case.
+* The strategy for each registry varies considerably based on how they make data available and how easy it is to interact with. For some it is simply a matter of downloading and parsing a single XML file, for others it is much more involved. Outputs can be ndjson (somtimes in a .csv format though) or a standard CSV with data columns, or some weird mix. For some we ony exact fields needed for our current use-case.
 
 * Jupyter notebooks are used for prototyping, development, and testing however the notebooks are shared alongside the paired Jupytext file.
 
@@ -75,7 +75,7 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/DRKS%20(Germ
 
 PACTR - Built and Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/PACTR%20(Africa)
-**Strategy:** No good way to get the max trial url suffix other than looking manually so we look at PACTR with a search that covers everything (i.e. a search for PACTR) and set a max trial url suffix to try and then iterate through each potential trials skipping those that don't exist or those with no assigned PACTR number. Slightly unfriendly but tricky to find a better way at the moment.
+**Strategy:** We get all the trial suffixes that point to detailed trial information and the cycles through them for the full scrape. 
 
 JPRN - Built and Partially Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/JPRN%20(Japan)
