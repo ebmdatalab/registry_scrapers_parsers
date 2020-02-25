@@ -29,12 +29,12 @@ Status of Additional Registries:
 
 EUCTR Results Pages - Built and Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/EUCTR%20(EU)/Results%20Section%20Scrape  
-**Strategy:** Manual scraping of html
+**Strategy:** Manual scraping of html. 
+*Note there is now both a standard and mutiprocessing version of this scraper available. The multiprocessing version is only tested on Mac.*
 
 EUCTR Sponsor Country - Built and Tested on Mac only: 
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/EUCTR%20(EU)/Sponsor%20Country%20Scrape  
-**Strategy:** Manual scraping of html but with the sloppiest multiprocessing implementation you will ever see  
-*Note: This code is admittedly a bit of a mess but it works*
+**Strategy:** Manual scraping of html now tidier! 
 
 ANZCTR - Built and Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/ANZCTR%20(AusNZ)  
@@ -92,7 +92,6 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/IRCT%20(Iran
 RPCEC - Built and Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/RPCEC%20(Cuba)
 **Strategy:** Get all the trial url suffixes then visit the trial pages and extract (along with the spanish language publications field)
-*Note: Exports to ndjson in order to behave properly with later pandas import*
 
 LBCTR - To Build
 
