@@ -99,27 +99,27 @@ def get_results_info(tup):
     
     r_dict = {}
     r_dict['trial_id'] = tup[0]
-    r_dict['global_end_of_trial_date'] = tds_strip(td_value,3)
+    r_dict['global_trial_end_date'] = tds_strip(td_value,3)
 
     if td_label[-1].div.get_text().strip() == 'Summary report(s)' and leg_text:
         fp, cp, v = scrape_info(11, 10, 9)
-        r_dict['first_publication_date'] = fp
-        r_dict['current_publication_date'] = cp
-        r_dict['results_version'] = v
+        r_dict['first_pub_date'] = fp
+        r_dict['current_pub_date'] = cp
+        r_dict['version'] = v
         r_dict['results_type'] = 'Document'
     
     elif td_label[-1].div.get_text().strip() == 'Summary report(s)' and not leg_text:
         fp, cp, v = scrape_info(7, 6, 5)
-        r_dict['first_publication_date'] = fp
-        r_dict['current_publication_date'] = cp
-        r_dict['results_version'] = v
+        r_dict['first_pub_date'] = fp
+        r_dict['current_pub_date'] = cp
+        r_dict['version'] = v
         r_dict['results_type'] = 'Mixed'
         
     else:
         fp, cp, v = scrape_info(7, 6, 5)
-        r_dict['first_publication_date'] = fp
-        r_dict['current_publication_date'] = cp
-        r_dict['results_version'] = v
+        r_dict['first_pub_date'] = fp
+        r_dict['current_pub_date'] = cp
+        r_dict['version'] = v
         r_dict['results_type'] = 'Tabular'
 
     return r_dict
@@ -136,15 +136,6 @@ else:
     print("Error in Scrape: Difference of {} trials between first and second scrape".format(len(tuples) - len(results)))
 
 results_df = pd.DataFrame(results)
-
-cleaned = 0
-for index, row in results_df.iterrows():
-    if row.first_pub_date == 'No':
-        results_df.at[index, 'first_pub_date'] = None
-        results_df.at[index, 'current_pub_date'] = None
-        results_df.at[index, 'version'] = None
-        results_df.at[index, 'results_type'] = 'None Available'
-        cleaned += 1
 
 #some data cleaning
 
