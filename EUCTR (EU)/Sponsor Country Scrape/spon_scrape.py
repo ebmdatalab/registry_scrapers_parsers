@@ -3,21 +3,17 @@ os.getcwd()
 os.chdir('/Users/nicholasdevito/Desktop/euctr_spon_scrape')
 os.getcwd()
 
-from requests import get
-from requests import ConnectionError
+from requests import get, ConnectionError
 from bs4 import BeautifulSoup
 import re
-from time import time
-from time import sleep
+from time import time, sleep
 import pandas as pd
-import istarmap
-from multiprocessing import Manager, Pool
-from itertools import repeat
+from multiprocessing import Pool
 from tqdm import tqdm
 
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    
+
 start_time = time()
 
 def get_url(url):
@@ -33,18 +29,13 @@ soup = get_url(url)
 number_of_pages = soup.find('div', {'class': 'margin-bottom: 6px;'})
 max_page_link = str(number_of_pages.find_all('a')[-1])
 max_page = re.findall(r'\d+', max_page_link)[0]
-#max_page = 50
-#chunk1 = [str(i) for i in range(1, 500)]
-#chunk2 = [str(i) for i in range(500, 1000)]
-#chunk3 = [str(i) for i in range(1000, 1500)]
-#chunk4 = [str(i) for i in range(1500, 1784)]
+
 pages = [str(i) for i in range(1,int(max_page)+1)]
-#pages = [str(i) for i in range(1,int(max_page)+1)]
+#below is for testing
+#pages = [str(i) for i in range(1,10+1)]
 
-manager = Manager()
-trial_info = manager.list()
 
-def try_to_connect(tries, url, error_list=None):
+def try_to_connect(tries, url):
     for i in range(tries):
         try:
             page_html = get_url(url)
@@ -55,15 +46,14 @@ def try_to_connect(tries, url, error_list=None):
                 sleep(2)
                 continue 
             else:
-                print('retry failed')
-                if error_list:
-                    error_list.append(url)
+                print('This URL failed: {url}')
                 page_html = None
     return page_html
 
-def get_trials(pages):
+def get_trials(page):
     base_search_url = 'https://www.clinicaltrialsregister.eu/ctr-search/search?query=&page='
-    page_html = try_to_connect(5, base_search_url + pages)
+    page_html = try_to_connect(5, base_search_url + page)
+    output = []
     
     #select all the trial tables
     if page_html:
@@ -72,7 +62,7 @@ def get_trials(pages):
         #get the trial id and the trial url for each thing
         for trial_table in trial_tables:
             trial_id = trial_table.input.get('value')
-            global trial_info
+            #global trial_info
             #trial_ids.append([trial_id])
             country_list = []
             try:
@@ -81,69 +71,55 @@ def get_trials(pages):
                     abbrev = c.text.strip()
                     country_list.append(abbrev)
                 trial_tuple = (trial_id, country_list)
-                trial_info.append(trial_tuple)
+                output.append(trial_tuple)
             except AttributeError:
-                trial_tuple = (trial_id, ['Error'])
-                trial_info.append(trial_tuple)
+                if trial_id == '2008-004625-42':
+                    trial_tuple = (trial_id, ['DE'])
+                else:
+                    trial_tuple = (trial_id, ['Error'])
+                output.append(trial_tuple)
+        return output
     else:
         pass
 
-def find_errors(countries, trial_ids):
+if __name__ == '__main__':
+    with Pool() as p:
+        trial_info = list(tqdm(p.imap(get_trials, pages), total=len(pages)))
+
+tuples = list(trial_info)
+tuples = [t for sublist in tuples for t in sublist]
+
+print(f'There are {len(tuples)} trials')
+
+for t in tuples:
     idx = 0
-    errors = []
-    error_trials = []
-    for x in countries:
-        if x == ['Error']:
-            errors.append(idx)
-        idx += 1
-    print('Error Trials:')
-    for e in errors:
-        print(trial_ids[e][0])
-        error_trials.append(trial_ids[e][0])
-    return errors, error_trials
+    if 'Error' in t[1]:
+        raise ValueError(f'There was an unexpected error in trial {t[0]}')
+print('No Trials Had Errors')
 
-def get_fix(error_trials):
-    fixes = []
-    for e_t in error_trials:
-        fix_input = input('Fix for trial error {}: '.format(e_t))
-        if ',' in fix_input:
-            list_response = fix_input.split(",")
-        else:
-            list_response = list([fix_input])
-        fixes.append(list_response)
-    return fixes
+sleep(2)
 
-
-def fix_errors(errors, fixes, countries):
-    for e, f in zip(errors, fixes):
-        countries[e] = f
-    return countries
-
-final_list = manager.list()
-catch_errors = manager.list()
-
-def get_sponsor_info(trial_ids, countries):
+def get_sponsor_info(tup):
     trial_page = 'https://www.clinicaltrialsregister.eu/ctr-search/trial/'
     sects = ['B.1.1', 'B.1.3.4', 'B.3.1 and B.3.2']
     labels = ['sponsor_name', 'sponsor_country', 'sponsor_status']
-    global final_list
-    global catch_errors
-    for trial, country in zip(repeat(list(trial_ids),len(countries)), countries):
+    prot_dicts = []
+    for c in tup[1]:
         trial_dict = {}
-        trial_dict['trial_id'] = trial[0]
-        if country == 'Outside EU/EEA':
-            soup = try_to_connect(5, trial_page + trial[0] + '/' + '3rd', error_list=catch_errors)
+        trial_dict['trial_id'] = tup[0]
+        if c == 'Outside EU/EEA':
+            soup = try_to_connect(5, trial_page + tup[0] + '/' + '3rd')
         else:
-            soup = try_to_connect(5, trial_page + trial[0] + '/' + country, error_list=catch_errors)            
+            soup = try_to_connect(5, trial_page + tup[0] + '/' + c)
         num_sponsors = soup.find_all(text=re.compile('B.Sponsor:'))
         content_error = soup.find('div', {'class': 'nooutcome'})
-        spons_list = []        
+        spons_list = []
         if num_sponsors:
             for n_s in num_sponsors:
-                a = soup.find(text=n_s).parent.parent.parent 
+                a = soup.find(text=n_s).parent.parent.parent
                 prot_dict = {}
-                prot_dict['protocol_country'] = country
-                for s,l in zip(sects,labels):
+                prot_dict['protocol_country'] = c
+                for s, l in zip(sects, labels):
                     s_text = a.find(text=s).parent.parent.find_all('td')[-1].text.strip()
                     if s_text:
                         prot_dict[l] = s_text
@@ -152,7 +128,7 @@ def get_sponsor_info(trial_ids, countries):
                 spons_list.append(prot_dict)
         else:
             prot_dict = {}
-            prot_dict['protocol_country'] = country
+            prot_dict['protocol_country'] = c
             for s,l in zip(sects, labels):
                 if content_error:
                     prot_dict[l] = 'Content Generation Error'
@@ -160,60 +136,19 @@ def get_sponsor_info(trial_ids, countries):
                     prot_dict[l] = 'No Data Available'
             spons_list.append(prot_dict)
         trial_dict['sponsors'] = spons_list
-        final_list.append(trial_dict)
+        prot_dicts.append(trial_dict)
+    return prot_dicts
 
 if __name__ == '__main__':
-    pool = Pool(8)
-    pool.map(get_trials, pages)
+	with Pool() as p:
+		sponsor_data = list(tqdm(p.imap(get_sponsor_info, tuples), total=len(tuples)))
 
-trial_info = list(trial_info)
+final_list = list(sponsor_data)
+final_list = [fl for sublist in final_list for fl in sublist]
 
-print(len(trial_info))
+print(f'There were {len(final_list)} protocols scraped')
 
-trial_ids = []
-countries = []
-
-for t in trial_info:
-    trial_ids.append([t[0]])
-    countries.append(t[1])
-
-sleep(2)
-
-#As of now there should only be 1 error trial due to some broken html
-#This is trial 2008-004625-42
-#When the input comes up enter 'DE' (no quotes) and press enter
-#And the fucntions will handle the rest
-#If other trials pop up, try running the above again and see if they persist
-#If they do, investigate whether they are actually broken
-#I believe my fixes should be able to handle any type of error and multiple
-#country trials but this isn't fully tested yet.
-#For multiple countries enter it as comma separated contries in the order
-#they appear in the EUCTR entry i.e. 'HU, GB, DE' (again no quotes)
-
-if ['Error'] in countries:
-    errors, error_trials = find_errors(countries, trial_ids)
-else:   
-    errors = []
-    print('No Errors')
-
-if errors != []:
-    fixes = get_fix(error_trials)
-    fix_errors(errors, fixes, countries)
-    
-sleep(2)
-
-if __name__ == '__main__':
-    for _ in tqdm(pool.istarmap(get_sponsor_info, zip(list(trial_ids), list(countries))),
-                       total = len(trial_ids)):
-        pass
-    #for _ in pool.starmap(get_sponsor_info, zip(list(trial_ids), list(countries))):
-    #    pass
-    pool.close()
-    pool.join()
-
-len(final_list)
-
-df = pd.io.json.json_normalize(final_list)
+df = pd.json_normalize(final_list)
 s = df['sponsors']
 s_exp = pd.concat([pd.DataFrame(x) for x in s], keys = s.index, sort=False)
 spons = df.drop('sponsors', 1).join(s_exp.reset_index(level=1, drop=True)).reset_index(drop=True)
@@ -222,33 +157,8 @@ end_time = time()
 
 print('Program ran in {} minute(s)'.format(round((end_time - start_time)/60),0))
 
-spons.to_csv('jan_spon_info.csv')
+spons.to_csv('test_spon_info.csv')
 
-#def test_single_trial(trial, country):
-#    trial_page = 'https://www.clinicaltrialsregister.eu/ctr-search/trial/'
-#    sects = ['B.1.1', 'B.1.3.4', 'B.3.1 and B.3.2']
-#    labels = ['sponsor_name', 'sponsor_country', 'sponsor_status']
-#    trial_dict = {}
-#    trial_dict['trial_id'] = trial
-#    spons_list = []
-#    tries=3
-#    for i in range(tries):
-#        try:
-#            soup = get_url(trial_page + trial + '/' + country)
-#            break
-#        except ConnectionError as e:
-#            if i < tries - 1:
-#                sleep(2)
-#                continue
-#            else:
-#                raise e
-#    num_sponsors = soup.find_all(text=re.compile('B.Sponsor:'))
-#    for n_s in num_sponsors:
-#        a = soup.find(text=n_s).parent.parent.parent 
-#        prot_dict = {}
-#        prot_dict['protocol_country'] = country
-#        for s,l in zip(sects,labels):
-#            prot_dict[l] = a.find(text=s).parent.parent.find_all('td')[-1].text.strip()
-#        spons_list.append(prot_dict)      
-#    trial_dict['sponsors'] = spons_list
-#    print(trial_dict)
+
+
+
