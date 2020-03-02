@@ -31,7 +31,6 @@ max_page_link = str(number_of_pages.find_all('a')[-1])
 max_page = re.findall(r'\d+', max_page_link)[0]
 
 pages = [str(i) for i in range(1,int(max_page)+1)]
-#below is for testing
 #pages = [str(i) for i in range(1,10+1)]
 
 
@@ -46,7 +45,7 @@ def try_to_connect(tries, url):
                 sleep(2)
                 continue 
             else:
-                print('This URL failed: {url}')
+                print(f'This URL failed: {url}')
                 page_html = None
     return page_html
 
@@ -108,36 +107,40 @@ def get_sponsor_info(tup):
         trial_dict = {}
         trial_dict['trial_id'] = tup[0]
         if c == 'Outside EU/EEA':
-            soup = try_to_connect(5, trial_page + tup[0] + '/' + '3rd')
+            soup = try_to_connect(6, trial_page + tup[0] + '/' + '3rd')
         else:
-            soup = try_to_connect(5, trial_page + tup[0] + '/' + c)
-        num_sponsors = soup.find_all(text=re.compile('B.Sponsor:'))
-        content_error = soup.find('div', {'class': 'nooutcome'})
-        spons_list = []
-        if num_sponsors:
-            for n_s in num_sponsors:
-                a = soup.find(text=n_s).parent.parent.parent
+            soup = try_to_connect(6, trial_page + tup[0] + '/' + c)
+        if soup:
+            num_sponsors = soup.find_all(text=re.compile('B.Sponsor:'))
+            content_error = soup.find('div', {'class': 'nooutcome'})
+            spons_list = []
+            if num_sponsors:
+                for n_s in num_sponsors:
+                    a = soup.find(text=n_s).parent.parent.parent
+                    prot_dict = {}
+                    prot_dict['protocol_country'] = c
+                    for s, l in zip(sects, labels):
+                        s_text = a.find(text=s).parent.parent.find_all('td')[-1].text.strip()
+                        if s_text:
+                            prot_dict[l] = s_text
+                        else:
+                            prot_dict[l] = 'No Data Available'
+                    spons_list.append(prot_dict)
+            else:
                 prot_dict = {}
                 prot_dict['protocol_country'] = c
-                for s, l in zip(sects, labels):
-                    s_text = a.find(text=s).parent.parent.find_all('td')[-1].text.strip()
-                    if s_text:
-                        prot_dict[l] = s_text
+                for s,l in zip(sects, labels):
+                    if content_error:
+                        prot_dict[l] = 'Content Generation Error'
                     else:
                         prot_dict[l] = 'No Data Available'
                 spons_list.append(prot_dict)
+            trial_dict['sponsors'] = spons_list
+            prot_dicts.append(trial_dict)
         else:
-            prot_dict = {}
-            prot_dict['protocol_country'] = c
-            for s,l in zip(sects, labels):
-                if content_error:
-                    prot_dict[l] = 'Content Generation Error'
-                else:
-                    prot_dict[l] = 'No Data Available'
-            spons_list.append(prot_dict)
-        trial_dict['sponsors'] = spons_list
-        prot_dicts.append(trial_dict)
-    return prot_dicts
+            prot_dict['error'] = 'Error In Scrape'
+        return prot_dicts
+        
 
 if __name__ == '__main__':
 	with Pool() as p:
@@ -157,7 +160,7 @@ end_time = time()
 
 print('Program ran in {} minute(s)'.format(round((end_time - start_time)/60),0))
 
-spons.to_csv('test_spon_info.csv')
+spons.to_csv('mar_spon_info.csv')
 
 
 
