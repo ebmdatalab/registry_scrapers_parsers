@@ -51,6 +51,7 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/ReBec%20(Bra
 
 REPEC - Built and Partially Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/REPEC%20(Peru)
+**Strategy:** Get XML and parse
 
 ChiCTR - Under Development
 
@@ -79,6 +80,7 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/PACTR%20(Afr
 
 JPRN - Built and Partially Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/JPRN%20(Japan)
+**Strategy:** The UMIN database has a full CSV of all trials and that is the vast majority of trails on the JPRN so not developing this further at the moment. 
 
 SLCTR - Built and Partially Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/SLCTR%20(Sri%20Lanka)  
