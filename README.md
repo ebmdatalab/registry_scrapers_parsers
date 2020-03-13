@@ -95,7 +95,9 @@ RPCEC - Built and Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/RPCEC%20(Cuba)
 **Strategy:** Get all the trial url suffixes then visit the trial pages and extract (along with the spanish language publications field)
 
-LBCTR - To Build
+LBCTR - Built and Tested
+https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/LBCTR%20(Lebanon)
+**Strategy:** Get all the trial url suffixes then visit the trial pages and extract trial info
 
 
 
