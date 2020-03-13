@@ -49,7 +49,7 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/ReBec%20(Bra
 **Strategy:** Use Selenium to download all the XMLs and then parse them  
 *Note: This is a very clumsy implementation through Selenium. We have a strategy for improving it and will update soon*
 
-REPEC - Built and Partially Tested:
+REPEC - Built and Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/REPEC%20(Peru)
 **Strategy:** Get XML and parse
 
@@ -66,13 +66,13 @@ NTR - Built and Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/NTR%20(Netherlands)  
 **Strategy:** Interact with the hidden API to get the full database behind the registry
 
-CTRI - Built and Partially Tested:
+CTRI - Built and Tested:
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/CTRI%20(India)  
-**Strategy:** Brute force visit all the possible URLs and scrape the html. Currently the scrape of all possible data does not work. We have a lighter weight scraping function available that only grabs what we need. A lighter footprint version of this scraper is potentially in the works.
+**Strategy:** Brute force visit all the possible URLs and scrape the html. Currently the scrape of all possible data does not work. We have a lighter weight scraping function available that only grabs what we need for our projects at present. A lighter footprint version of this scraper is potentially in the works.
 
 DRKS - Built and Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/DRKS%20(Germany)  
-**Strategy:** Breifly uses Selenium to grab some information to inform the rest of the scrape which visits each trial page and gets the html
+**Strategy:** Briefly uses Selenium to grab some information to inform the rest of the scrape which visits each trial page and gets the html
 
 PACTR - Built and Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/PACTR%20(Africa)
@@ -82,7 +82,7 @@ JPRN - Built and Partially Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/JPRN%20(Japan)
 **Strategy:** The UMIN database has a full CSV of all trials and that is the vast majority of trails on the JPRN so not developing this further at the moment. 
 
-SLCTR - Built and Partially Tested
+SLCTR - Built and Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/SLCTR%20(Sri%20Lanka)  
 **Strategy:** Straighforward grab of record ids then scrape of all trial info from html
 
