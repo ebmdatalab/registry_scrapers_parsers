@@ -5,7 +5,7 @@ Code to scrape/handle/extract data from various ICTRP Primary Registries.
 
 * Some these make use of Selenium and ChromeDriver (at the moment) at a discrete path, not as an environmental PATH variable. Make sure to modify to fit your file system and ChromeDriver (or other browser Driver) implementation
 
-* The strategy for each registry varies considerably based on how they make data available and how easy it is to interact with. For some it is simply a matter of downloading and parsing a single XML file, for others it is much more involved. Outputs can be ndjson (somtimes in a .csv format though) or a standard CSV with data columns, or some weird mix. For some we ony exact fields needed for our current use-case.
+* The strategy for each registry varies considerably based on how they make data available and how easy it is to interact with. For some it is simply a matter of downloading and parsing a single XML file, for others it is much more involved. Outputs can be ndjson (somtimes in a .csv format though) or a standard CSV with data columns, or some weird mix. For some we ony extract fields needed for our current use-case.
 
 * Jupyter notebooks are used for prototyping, development, and testing however the notebooks are shared alongside the paired Jupytext file.
 
@@ -76,7 +76,7 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/DRKS%20(Germ
 
 PACTR - Built and Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/PACTR%20(Africa)
-**Strategy:** We get all the trial suffixes that point to detailed trial information and the cycles through them for the full scrape. 
+**Strategy:** We get all the trial suffixes that point to detailed trial information and then cycle through them for the full scrape. 
 
 JPRN - Built and Partially Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/JPRN%20(Japan)
@@ -84,7 +84,7 @@ https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/JPRN%20(Japa
 
 SLCTR - Built and Tested
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/SLCTR%20(Sri%20Lanka)  
-**Strategy:** Straighforward grab of record ids then scrape of all trial info from html
+**Strategy:** Straightforward grab of record ids then scrape of all trial info from html
 
 IRCT - Built and Tested (SEE NOTE)
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/IRCT%20(Iran)  
