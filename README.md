@@ -58,7 +58,7 @@ ChiCTR - Under Development
 ISRCTN - Not Necessary at present  
 *Note: Can generate a CSV of most registry values for entire registry natively through website search by putting registration dates far in the future and the past. Previous ISRCTN Scraper available here: https://github.com/opentrials/collectors/tree/master/collectors/isrctn*
 
-TCTR - Built and Tested:
+TCTR - Code is legacy. No scraper implemented yet for new version of the TCTR (https://www.thaiclinicaltrials.org/):
 https://github.com/ebmdatalab/registry_scrapers_parsers/tree/master/TCTR%20(Thailand)  
 **Strategy:** Get the full XML of the registry and parse
 
